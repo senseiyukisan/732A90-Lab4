@@ -80,12 +80,12 @@ chisq_plot
 library(gridExtra)
 
 # Plotting only first 1000 values for a better view on burn-in period.
-lnorm_vals_burn_in = lnorm_vals[1:5000]
+lnorm_vals_burn_in = lnorm_vals[1:1000]
 lnorm_burn_in = ggplot(data = data.frame(lnorm_vals_burn_in), aes(x = 1:length(lnorm_vals_burn_in), y = lnorm_vals_burn_in)) +
   geom_line(color="darkgreen") +  
   xlab("t") + ylab("x(t)") + ggtitle("lnorm")
 
-chisq_vals_burn_in = chisq_vals[1:5000]
+chisq_vals_burn_in = chisq_vals[1:1000]
 chisq_burn_in = ggplot(data = data.frame(chisq_vals_burn_in), aes(x = 1:length(chisq_vals_burn_in), y = chisq_vals_burn_in)) +
   geom_line(color="darkgreen") +  
   xlab("t") + ylab("x(t)") + ggtitle("chi-square")
@@ -110,6 +110,12 @@ gelman.diag(mcmc_list)
 ### 5 ###
 #########
 
+# We get the estimate by calculating the mean of our samples from 1 and 2
+# lnorm
+lnorm_estimate = mean(lnorm_vals[-(1:1000)])
+
+# chisquare
+chisq_estimate = mean(chisq_vals[-(1:1000)])
 
 #########
 ### 6 ###
