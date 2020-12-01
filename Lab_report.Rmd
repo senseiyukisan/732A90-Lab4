@@ -159,6 +159,7 @@ From here, we can compute the posterior probability at each step. For the first 
 FOr the first step, we have:
 
 $$p(\mu_1 | \vec\mu_{-1},\vec Y) \propto exp \Bigg{[} -\frac{1}{2\sigma^2} \bigg{[}  (\mu_1- \mu_2)^2 + (\mu_1 - y_1)^2  \bigg{]} \Bigg{]}$$
+
 Frr the last step we have:
 
 $$p(\mu_n | \vec\mu_{-n}, \vec Y) \propto exp \Bigg{[} -\frac{1}{2\sigma^2}  \bigg{[}  (\mu_{n-1} - \mu_{n})^2 + (\mu_n - y_{n})^2  \bigg{]}  \Bigg{]} $$

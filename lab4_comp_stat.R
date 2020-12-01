@@ -162,10 +162,42 @@ plot1
 ### 4 ###
 #########
 
-# See code for slides 18 and 19
+num_values = 1000
+
+f.MCMC.Gibbs<-function(nstep, X0, Y, variance){
+  vN<-1:nstep
+  mX<-matrix(0,nrow=nstep,ncol=length(Y))
+  mX[1,]<-X0
+  length_y = length(Y)
+  for (i in 2:nstep){
+    prev_sample<-mX[i-1,]
+    curr_sample<-rep(0,length(Y))
+    curr_sample[1]<-rnorm(1, mean=((prev_sample[2]+Y[1])/2), sqrt(variance)/2)
+    for (j in 2:(length_y-1)){
+      curr_sample[j]<-rnorm(1, mean=(Y[j] + prev_sample[j-1] + prev_sample[j+1])/3, sqrt(variance)/3)
+    }
+    curr_sample[length_y]<-rnorm(1, mean=((Y[length_y]+prev_sample[length_y-1])/2), sqrt(variance)/2)
+    mX[i,]<-curr_sample
+  }
+  mX
+}
+
+gibbs_vals = f.MCMC.Gibbs(num_values, rep(0, length(Y)), Y, variance=0.2)
+column_means = colMeans(gibbs_vals)
+
+data = cbind(data, column_means)
+
+plot1  =  ggplot(data) +
+  geom_line(aes(x=X, y=Y), color="darkgreen") +
+  geom_line(aes(x=X, y=column_means), color="red") + ggtitle("true ~ predicted")
+plot1
 
 #########
 ### 5 ###
 #########
 
-# See code for slides 18 and 19
+mu_n = gibbs_vals[,50]
+
+chisq_burn_in = ggplot(data = mu_n, aes(x = 1:length(mu_n), y = mu_n)) +
+  geom_line(color="darkgreen") +  
+  xlab("t") + ylab("x(t)") + ggtitle("trace plot mu_n")
