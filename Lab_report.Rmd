@@ -137,42 +137,44 @@ The probability distribution function of a gaussian distribution is:
 $$N(\mu,\,\sigma^{2}) = \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(y_i-\mu_i)^2}{2\sigma^2}}$$
 We calculate the Likelihood as the product of successive probability distributions:
 
-$$P(Y|\mu) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} \cdot exp \Bigg{(} -\frac{(y_i-\mu_i)^2}{2\sigma^2} \Bigg{)} = \bigg{(}\frac{1}{\sqrt{2\pi\sigma^2}}\bigg{)}^n  \cdot exp \Bigg{(}  -\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-\mu_i)^2 \Bigg{)}$$
+$$p(Y|\mu) = \prod_{i=1}^{n} \frac{1}{\sqrt{2\pi\sigma^2}} \cdot exp \Bigg{(} -\frac{(y_i-\mu_i)^2}{2\sigma^2} \Bigg{)} = \bigg{(}\frac{1}{\sqrt{2\pi\sigma^2}}\bigg{)}^n  \cdot exp \Bigg{(}  -\frac{1}{2\sigma^2}\sum_{i=1}^{n}(y_i-\mu_i)^2 \Bigg{)}$$
 
 For the calculation of the prior, the first element of the product of probabilities is just equal to 1, we therefore compute the product of the normal distributions from 1 to n-1. The prior is thus:
 
-$$P(\mu) = \bigg{(}\frac{1}{\sqrt{2\pi\sigma^2}}\bigg{)}^n \cdot  exp \Bigg{(} -\frac{1}{2\sigma^2}\sum_{i = 1}^{n-1}(\mu_{i+1}-\mu_i)^2 \Bigg{)}$$
+$$p(\mu) = \bigg{(}\frac{1}{\sqrt{2\pi\sigma^2}}\bigg{)}^n \cdot  exp \Bigg{(} -\frac{1}{2\sigma^2}\sum_{i = 1}^{n-1}(\mu_{i+1}-\mu_i)^2 \Bigg{)}$$
 
 ### 3
 
 The posterior is:
 
-$$P(\vec\mu|\vec{Y}) \propto P(\vec{Y}|\vec{\mu})P(\vec{\mu})$$
+$$p(\vec\mu|\vec{Y}) \propto P(\vec{Y}|\vec{\mu})P(\vec{\mu})$$
 We compute the product and associate terms under the exponential. We then isolate the last term of the sum of the likelihood and perform the sum from 1 to n-1:
 
-$$P(\vec\mu|\vec{Y}) \propto \text{exp} \Bigg{[}  -\frac{1}{2\sigma^2}\sum_{i=1}^{n}({y_i}-{\mu_i})^2 \Bigg{]} \text{exp} \Bigg{[} -\frac{1}{2\sigma^2}\sum_{i = 1}^{n-1}({\mu_{i+1}}-{\mu_i})^2 \Bigg{]}$$
+$$p(\vec\mu|\vec{Y}) \propto \text{exp} \Bigg{[}  -\frac{1}{2\sigma^2}\sum_{i=1}^{n}({y_i}-{\mu_i})^2 \Bigg{]} \text{exp} \Bigg{[} -\frac{1}{2\sigma^2}\sum_{i = 1}^{n-1}({\mu_{i+1}}-{\mu_i})^2 \Bigg{]}$$
 
-$$P(\vec\mu|\vec{Y}) \propto exp \Bigg{[} -\frac{1}{2\sigma^2} \bigg{(} \sum_{i=1}^{n}({y_i}-{\mu_i})^2 + \sum_{i = 1}^{n-1}({\mu_{i+1}}-{\mu_i})^2 \bigg{)} \Bigg{]} \propto exp \Bigg{[} -\frac{1}{2\sigma^2} \bigg{(} \sum^{n-1}_{i=1} \big{[} (\mu_i - \mu_{i+1})^2 + (\mu_i -  y_i)^2 \big{]}a + (\mu_n - y_n)^2 \big{)} \Bigg{]}$$
+$$p(\vec\mu|\vec{Y}) \propto exp \Bigg{[} -\frac{1}{2\sigma^2} \bigg{(} \sum_{i=1}^{n}({y_i}-{\mu_i})^2 + \sum_{i = 1}^{n-1}({\mu_{i+1}}-{\mu_i})^2 \bigg{)} \Bigg{]} \propto exp \Bigg{[} -\frac{1}{2\sigma^2} \bigg{(} \sum^{n-1}_{i=1} \big{[} (\mu_i - \mu_{i+1})^2 + (\mu_i -  y_i)^2 \big{]} + (\mu_n - y_n)^2 \big{)} \Bigg{]}$$
 
 From here, we can compute the posterior probability at each step. For the first and last step, the calculation is straightforward making use of hint B given in the exercise sheet. However, for middle steps, we encounter an issue in the generalization of the calculation of the prior in the middle of our sequence. the i-th prior's depends on the previous value and the one that follows.
 
 FOr the first step, we have:
 
-$$P(\mu_1 | \vec\mu_{-1},\vec Y) \propto exp \Bigg{[} -\frac{1}{2\sigma^2} \bigg{[}  (\mu_1- \mu_2)^2 + (\mu_2 - y_1)^2  \bigg{]} \Bigg{]}$$
+$$p(\mu_1 | \vec\mu_{-1},\vec Y) \propto exp \Bigg{[} -\frac{1}{2\sigma^2} \bigg{[}  (\mu_1- \mu_2)^2 + (\mu_1 - y_1)^2  \bigg{]} \Bigg{]}$$
 Frr the last step we have:
 
-$$P(\mu_n | \vec\mu_{-n}, \vec Y) \propto exp \Bigg{[} -\frac{1}{2\sigma^2}  \bigg{[}  (\mu_{n-1} - \mu_{n})^2 + (\mu_n - y_{n})^2  \bigg{]}  \Bigg{]} $$
+$$p(\mu_n | \vec\mu_{-n}, \vec Y) \propto exp \Bigg{[} -\frac{1}{2\sigma^2}  \bigg{[}  (\mu_{n-1} - \mu_{n})^2 + (\mu_n - y_{n})^2  \bigg{]}  \Bigg{]} $$
 We can use hint B to transform both these expressions respectively into:
 
-$$P(\mu_1 | \vec\mu_{-1},\vec Y)  \propto exp \Bigg{[} -\frac{1}{\sigma^2} \bigg{[} \mu_1 - \frac{\mu_2+y_1}{2} \bigg{]}^2 \Bigg{]} \sim N \Bigg{(}\frac{\mu_2+y_1}{2}, \frac{\sigma^2}{2} \Bigg{)}$$
+$$p(\mu_1 | \vec\mu_{-1},\vec Y)  \propto exp \Bigg{[} -\frac{1}{\sigma^2} \bigg{[} \mu_1 - \frac{\mu_2+y_1}{2} \bigg{]}^2 \Bigg{]} \sim N \Bigg{(}\frac{\mu_2+y_1}{2}, \frac{\sigma^2}{2} \Bigg{)}$$
  and 
  
- $$P(\mu_n | \vec\mu_{-n},\vec Y)  \propto exp \Bigg{[} -\frac{1}{\sigma^2} \bigg{[} \mu_n - \frac{\mu_{n-1}+y_n}{2} \bigg{]}^2 \Bigg{]} \sim N \Bigg{(} \frac{\mu_{n-1}+y_n}{2}, \frac{\sigma^2}{2} \Bigg{)}$$
+ $$p(\mu_n | \vec\mu_{-n},\vec Y)  \propto exp \Bigg{[} -\frac{1}{\sigma^2} \bigg{[} \mu_n - \frac{\mu_{n-1}+y_n}{2} \bigg{]}^2 \Bigg{]} \sim N \Bigg{(} \frac{\mu_{n-1}+y_n}{2}, \frac{\sigma^2}{2} \Bigg{)}$$
 For the middle step we have terms that show dependency on the previous and the next step in the calculation of the prior-term:
 
-$$P(\mu_i | \vec\mu_{-i},\vec Y) \propto exp \Bigg{[} -\frac{1}{2\sigma^2} \bigg{[}  (\mu_{i-1}- \mu_{i})^2+ (\mu_i- \mu_{i+1})^2 + (\mu_{i} - y_1)^2  \bigg{]} \Bigg{]}$$
+$$p(\mu_i | \vec\mu_{-i},\vec Y) \propto exp \Bigg{[} -\frac{1}{2\sigma^2} \bigg{[}  (\mu_{i-1}- \mu_{i})^2+ (\mu_i- \mu_{i+1})^2 + (\mu_{i} - y_i)^2  \bigg{]} \Bigg{]}$$
 
  We now use hint C given in the exercise sheet and obtain the following:
  
- $$P(\mu_i | \vec\mu_{-i},\vec Y) \propto exp \Bigg{[} -\frac{3}{2\sigma^2} \bigg{[}  \mu_i - \frac{\mu_{i-1} + \mu_{i+1}+y_i}{3}  \bigg{]}^2 \Bigg{]} \sim N \Bigg{(} \frac{\mu_{i-1} + \mu_{i+1}+y_i}{3}, \frac{\sigma^2}{3} \Bigg{)}$$
+ $$p(\mu_i | \vec\mu_{-i},\vec Y) \propto exp \Bigg{[} -\frac{3}{2\sigma^2} \bigg{[}  \mu_i - \frac{\mu_{i-1} + \mu_{i+1}+y_i}{3}  \bigg{]}^2 \Bigg{]} \sim N \Bigg{(} \frac{\mu_{i-1} + \mu_{i+1}+y_i}{3}, \frac{\sigma^2}{3} \Bigg{)}$$
+ 
+ 
  

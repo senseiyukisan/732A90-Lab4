@@ -33,7 +33,7 @@ f.MCMC.MH.lnorm = function(nstep, X0, props){
 }
 
 set.seed(12345)
-lnorm_vals = f.MCMC.MH.lnorm(nstep = 50000, X0 = 1, props = f_target(1))
+lnorm_vals = f.MCMC.MH.lnorm(nstep = 500, X0 = 1, props = f_target(1))
 
 lnorm_plot = ggplot(data = data.frame(lnorm_vals), aes(x = 1:length(lnorm_vals), y = lnorm_vals)) +
   geom_line(color="darkgreen") +  
